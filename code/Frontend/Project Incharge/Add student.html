@@ -1,0 +1,171 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+         label {
+        color: rgb(0, 6, 85);
+    }
+    input[type=text],[type=email]{
+            border:2px solid palevioletred;
+        }
+    </style>
+    <script>
+        const user = sessionStorage.getItem("userid");
+        const branch = sessionStorage.getItem("pibranch");
+        console.log(branch);
+        function performAjax(httpMethod, url, params) {
+            const myPromise = new Promise((resolve, reject) => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        resolve(this.responseText);
+                    }
+                    if (this.status == 500) {
+                        reject({ error: true, message: "ServerError" });
+                    }
+                    if (this.status == 404) {
+                        reject({ error: true, message: "Resource not found" });
+                    }
+                };
+                xhttp.open(httpMethod, url, true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                params ? xhttp.send(params) : xhttp.send();
+            });
+            return myPromise;
+        }
+
+        function loaddata() {
+
+            document.getElementById("branch").value = branch;
+            const getdata = performAjax("GET", `http://localhost:7777/ProjectIncharge/viewEmployees/${branch}`);
+            getdata
+                .then((details) => {
+                    getInternalGuides(details);
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+        }
+
+        function getInternalGuides(branch) {
+            let role = document.getElementById("role");
+            const get = JSON.parse(branch);
+            for (let i = 0; i < get.length; i++) {
+                const getuni = document.createElement("OPTION");
+                getuni.innerHTML = get[i].name;
+                getuni.value = get[i].name;
+                role.options.add(getuni);
+            }
+
+        }
+        function addStudent(event) {
+            const htno = document.getElementById("htno").value;
+            const name = document.getElementById("name").value;
+            const phone = document.getElementById("phone").value;
+            const emailid = document.getElementById("emailid").value;
+            const password = Math.floor((Math.random() * 100) + 1);
+            const branch = document.getElementById("branch").value;
+            const role = document.getElementById("role").value;
+            const address = document.getElementById("address").value;
+            const image = document.getElementById("image").files;
+           
+            if (image.length > 0) {
+                var imageToLoad = image[0];
+                var imageReader = new FileReader();
+                imageReader.onload = function (fileLoadedEvent) {
+                    const imagepath = fileLoadedEvent.target.result;
+                    const addPromise = performAjax(
+                        "POST", "http://localhost:7777/ProjectIncharge/addStudent",
+                        JSON.stringify({ htno, name, branch, phone, emailid, password, guidename: role, address, image: imagepath })
+                    );
+                    addPromise
+                        .then(isExist => {
+
+                            alert("Added Successfully");
+                            cancel();
+                            // window.location.href = "studentData";
+                        })
+                        .catch(err => {
+                            alert(err.message);
+                        });
+                }
+                imageReader.readAsDataURL(imageToLoad);
+            }
+        }
+        function cancel() {
+            event.preventDefault();
+            document.getElementById("htno").value = "";
+            document.getElementById("name").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("emailid").value = "";
+            document.getElementById("branch").value = "";
+            document.getElementById("address").value = "";
+            document.getElementById("role").value = "";
+
+        }
+    </script>
+</head>
+
+
+<body onload="loaddata()" style="background-color:transparent"><br>
+    <div class="container-fluid">
+        <center>
+            <h2><b>Add Student</b></h2>
+        </center><br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2"><label>HallTicket No:</label>
+                <input type="text" id="htno" class="form-control">
+            </div>
+            <div class="col-sm-2"><label>Name:</label>
+                <input type="text" id="name" class="form-control">
+            </div>
+            <div class="col-sm-2"><label>Branch:</label><br>
+                <input type="text" id="branch" class="form-control">
+            </div>
+            <div class="col-sm-3"></div>
+        </div><br>
+
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2"><label>Email Id:</label>
+                <input type="email" id="emailid" class="form-control">
+            </div>
+            <div class="col-sm-2"><label> Mobile No:</label>
+                <input type="text" id="phone" class="form-control">
+            </div>
+            <div class="col-sm-2"><label>Internal Guide:</label>
+                <select id="role" class="form-control" style=" border:2px solid palevioletred;">
+                    <option value="">--select--</option>
+                </select>
+            </div>
+            <div class="col-sm-3"></div>
+        </div><br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2"><label>Address:</label>
+                <textarea name="message" class="form-control" id="address" style="height:38px; border:2px solid palevioletred;"></textarea>
+            </div>
+            <div class="col-sm-2"><label>Image:</label>
+                <input type="file" id="image" class="form-control" style=" border:2px solid palevioletred;">
+            </div>
+            <div class="col-sm-3"></div>
+        </div><br>
+        <div class="row">
+
+            <div class="col-sm-5"></div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-primary" onclick="addStudent()">Submit</button>
+            </div>
+            <div class="col-sm-5"></div>
+        </div><br>
+
+    </div>
+</body>
+
+</html>

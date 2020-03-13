@@ -1,0 +1,261 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        label {
+            color: rgb(0, 6, 85);
+        }
+
+        .menu {
+            position: fixed;
+            top: 50px;
+            right: 250px;
+        }
+
+        .tablecss {
+            font-family: 'Times New Roman', Times, serif;
+            border-collapse: collapse;
+            width: 80%;
+            font-size: 15px;
+        }
+
+        .tablecss td,
+        .tablecss th {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .tablecss tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .tablecss tr:hover {
+            background-color: rgb(220, 247, 220);
+        }
+
+        .tablecss th {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            background-color: rgb(231, 110, 74);
+            font-weight: bold;
+            color: honeydew;
+        }
+
+        .tablecss tr {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+            color: rgb(3, 7, 27);
+        }
+    </style>
+    <script>
+        const branch = sessionStorage.getItem("hodbranch");
+
+        function performAjax(httpMethod, url, params) {
+            const myPromise = new Promise((resolve, reject) => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        resolve(this.responseText);
+                    }
+                    if (this.status == 500) {
+                        reject({ error: true, message: "ServerError" });
+                    }
+                    if (this.status == 404) {
+                        reject({ error: true, message: "Resource not found" });
+                    }
+                };
+                xhttp.open(httpMethod, url, true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                params ? xhttp.send(params) : xhttp.send();
+            });
+            return myPromise;
+        }
+        function LoadData() {
+            document.body.style.backgroundColor = "transparent";
+
+            const getdata = performAjax("GET", `http://localhost:7777/ProjectIncharge/viewProjects?branch=${branch}`);
+            getdata
+                .then((details) => {
+
+                    showData(details);
+
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+        }
+        function showData(records) {
+            const studentdata = JSON.parse(records);
+            const tableHeaderString = '<tr><th>S.No</th><th>HallTicket No</th><th>DocumentType Name</th><th>Guide Name</th><th>Project Name</th><th>Status</th><th>Photo</th><th>Action</th></tr>';
+            let tableRowString = '';
+            if (studentdata.length > 0) {
+                studentdata.map((student, index) => {
+                    let comment = `<i id="${student._id}" class="fa fa-comment" onclick="comment(event)" data-toggle="modal" data-target="#myModal" style="color:blue" title="comment"></i>`;
+                    let download = `<i id="${student._id}" onclick="download(event)"  style="color:blue" class="fa fa-download fa-2px" aria-hidden="true" title="download"></i>`;
+
+                    tableRowString += `<tr><td>${index + 1}</td><td>${student.htno}</td><td>${student.typename}</td><td>${student.guidename}</td><td>${student.projectname}</td><td>${student.status}</td><td><img src="${student.image}" style="width:80px;height:70px"></td>
+                              <td>${comment}&nbsp;${download}</td>  </tr>`;
+                });
+                document.getElementById('table').innerHTML = `<table border="1">${tableHeaderString}${tableRowString}</table>`;
+            }
+            else {
+                tableRowString = `<tr><td colspan="8" align="center">No Data Found</td></tr>`
+                document.getElementById('table').innerHTML = `${tableHeaderString}${tableRowString}`;
+            }
+        }
+
+
+        function comment(event) {
+            event.preventDefault();
+            const getPromise = performAjax("GET", `http://localhost:7777/ProjectIncharge/getProjectData/${event.target.id}`);
+            getPromise
+                .then(datas => {
+                    const get = JSON.parse(datas);
+                    get.map(editRecord => {
+                        if (editRecord.hodcomments == "") {
+                            document.getElementById("myModal").style.display = 'block';
+                            document.getElementById("id").value = editRecord._id;
+                            console.log(editRecord._id);
+
+                            document.getElementById("htno").value = editRecord.htno;
+
+                        }
+                        else {
+                            alert("Already Comment has given");
+                            document.getElementById("send").style.display = "none";
+                            document.getElementById("htno").value = editRecord.htno;
+                            document.getElementById("comment").value = editRecord.hodcomments;
+                            console.log(editRecord.hodcomments);
+                        }
+                    });
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+        }
+
+        function updateStudent() {
+            document.getElementById("id").value = id
+            const htno = document.getElementById("htno").value
+            const hodcomments = document.getElementById("comment").value
+            const getUpdatePromise = performAjax(
+                "PUT",
+                `http://localhost:7777/ProjectIncharge/Projectcomment/${htno}`,
+                JSON.stringify({ htno, hodcomments })
+            );
+            getUpdatePromise
+                .then((updatePromise) => {
+                    alert('Comment sent');
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+
+
+        }
+        function download(event) {
+            event.preventDefault();
+            const getPromise = performAjax("GET", `http://localhost:7777/HOD/projectdownload/${event.target.id}`);
+            getPromise
+                .then(data => {
+                    [data].map(editRecord => {
+                        window.open(JSON.parse(editRecord).image);
+                    })
+                })
+                .catch(err => {
+                    alert(err.message);
+                });
+
+        }
+        function search() {
+            event.preventDefault();
+            const projectname = document.getElementById("search").value;
+            const searchPromise = performAjax(
+                "GET",
+                `http://localhost:7777/HOD/search?projectname=${projectname}`
+            );
+            searchPromise
+                .then((response) => {
+                    const data = JSON.parse(JSON.stringify(response));
+                    showData(data);
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+        }
+
+    </script>
+
+<body onload="LoadData()"><br>
+    <h2>
+        <center><strong>List of Projects</strong></center>
+    </h2>
+    <br>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-2">
+            <input type="text" id="search" placeholder="projectname"  class="form-control"></div>
+        <div class="col-sm-2"><button type="button" class="btn btn-success" onclick="search()">Search</button></div>
+    
+    <div class="col-sm-4"></div>
+
+    </div>
+    <br>
+    <center>
+        <table id="table" border="1" class="tablecss"></table>
+    </center>
+
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="background-color: rgb(255, 250, 238)">
+                <div class="modal-header" style="background-color: lightcoral">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Comments Regarding Project</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <input type="hidden" id="id"><br>
+
+                        <div class="col-sm-4"></div>
+
+                        <div class="col-sm-4">
+                            <input type="text" id="htno" class="w3-input"><br></div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4"> <label>
+                                Comment Box
+                            </label>
+                            <textarea cols="30" id="comment" class="w3-input"></textarea></div>
+                        <div class="col-sm-4"></div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="send" data-dismiss="modal"
+                        onclick="updateStudent()">Send</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+
+
+
+</html>

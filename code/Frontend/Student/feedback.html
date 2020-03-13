@@ -1,0 +1,149 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+         h1 {
+        color: rgb(0, 6, 85);
+    }
+        .wardens {
+            margin-left: 800px;
+            top: 50px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .tablecss {
+            font-family:'Times New Roman', Times, serif;
+            border-collapse: collapse;
+            font-size: 15px;
+
+        }
+
+        .tablecss td,
+        .tablecss th {
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        .tablecss tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .tablecss tr:hover {
+            background-color: rgb(143, 240, 143);
+            
+        }
+
+        .tablecss th {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            background-color: rgb(231, 110, 74);
+            font-weight: bold;
+            color:honeydew;
+        }
+        .tablecss tr {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+            color:rgb(3, 7, 27);
+        }
+    </style>
+    <script>
+            const htno = sessionStorage.getItem("htno");
+
+        function performAjax(httpMethod, url, params) {
+            const myPromise = new Promise((resolve, reject) => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        resolve(this.responseText);
+                    }
+                    if (this.status == 500) {
+                        reject({ error: true, message: "ServerError" });
+                    }
+                    if (this.status == 404) {
+                        reject({ error: true, message: "Resource not found" });
+                    }
+                };
+                xhttp.open(httpMethod, url, true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                params ? xhttp.send(params) : xhttp.send();
+            });
+            return myPromise;
+        }
+        function enableAdd() {
+            event.preventDefault();
+            document.getElementById('myModal').style.display = 'block';
+            document.getElementById("add").style.display = 'block';
+            document.getElementById("btnupdate").style.display = 'none';
+            document.getElementById("name").focus();
+        }
+
+        function LoadData() {
+            document.body.style.backgroundColor = "transparent";
+
+            const getdata1 = performAjax("GET", `http://localhost:7777/Student/viewComments?htno=${htno}`);
+            getdata1
+                .then((details) => {
+
+                    showData(details);
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+        }
+
+
+        function showData(records) {
+            const data = JSON.parse(records);
+            const tableHeaderString = '<tr><th>S.No</th><th>HallTicket No.</th><th>Document Type</th><th>Project Name</th><th>Status</th><th>Internal Guide</th><th>Project Incharge</th><th>Head Of Department</th><th>Action</th></tr>';
+            let tableRowString = '';
+            data.map((feedback, index) => {
+                let edit = `<i id="${feedback._id}" class="fa fa-pencil-square-o fa-2px" style="color:blue" onclick="editRecords(event)" data-toggle="modal" data-target="#myModal" aria-hidden="true" ></i>`;
+                let del = `<i id="${feedback._id}" class="fa fa-trash fa-2px" aria-hidden="true" style="color:red;font:size:20%" onclick="deleteRecord(event)"></i>`;
+                let download = `<i id="${feedback._id}" onclick="download(event)"  style="color:blue" class="fa fa-download fa-2px" aria-hidden="true" title="download"></i>`;
+
+                tableRowString += `<tr><td>${index + 1}</td><td>${feedback.htno}</td><td>${feedback.typename}</td><td>${feedback.projectname}</td><td>${feedback.status}</td><td>${feedback.inguidecomments}</td><td>${feedback.projectincomments}</td><td>${feedback.hodcomments}</td>
+                  <td>${download}</td></tr>`;
+            });
+            const tableString = `<table border="1">${tableHeaderString}${tableRowString}</table>`;
+
+            document.getElementById('table').innerHTML = tableString;
+        }
+      
+     
+        function download(event) {
+            event.preventDefault();
+            const getPromise = performAjax("GET", `http://localhost:7777/Student/projectdownload/${event.target.id}`);
+            getPromise
+                .then(data => {
+                    [data].map(editRecord => {
+                        window.open(JSON.parse(editRecord).image);
+                    })
+                })
+                .catch(err => {
+                    alert(err.message);
+                });
+
+        }
+    </script>
+</head>
+
+<body onload="LoadData()">
+   <h1> <center><strong>FeedBack</strong></center></h1>
+            <center>
+                <table id="table" border="1" class="tablecss"></table>
+            </center>
+           
+           
+    </div>
+
+</body>
+
+</html>

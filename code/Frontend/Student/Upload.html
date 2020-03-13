@@ -1,0 +1,138 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<style>
+    label {
+        color: rgb(0, 6, 85);
+    }
+</style>
+<script>
+    const guidename = sessionStorage.getItem("guidename");
+    const htno = sessionStorage.getItem("htno");
+    const branch = sessionStorage.getItem("studentbranch");
+
+    function performAjax(httpMethod, url, params) {
+        const myPromise = new Promise((resolve, reject) => {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    resolve(this.responseText);
+                }
+                if (this.status == 500) {
+                    reject({ error: true, message: "ServerError" });
+                }
+                if (this.status == 404) {
+                    reject({ error: true, message: "Resource not found" });
+                }
+            };
+            xhttp.open(httpMethod, url, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            params ? xhttp.send(params) : xhttp.send();
+        });
+        return myPromise;
+    }
+    function loaddata() {
+        document.getElementById("htno").value = htno;
+        document.getElementById("guidename").value = guidename;
+        document.getElementById("branch").value = branch;
+
+
+    }
+    function Upload() {
+        const htno = document.getElementById("htno").value;
+        const branch = document.getElementById("branch").value;
+        const guidename = document.getElementById("guidename").value;
+        const typename = document.getElementById("typename").value;
+        const projectname = document.getElementById("projectname").value;
+        const image = document.getElementById("image").files;
+        const status = 'pending';
+        const inguidecomments = document.getElementById("inguidecomments").value;
+        const projectincomments = document.getElementById("projectincomments").value;
+        const hodcomments = document.getElementById("hodcomments").value;
+        if (image.length > 0) {
+            var imageToLoad = image[0];
+            var imageReader = new FileReader();
+            imageReader.onload = function (fileLoadedEvent) {
+                const imagepath = fileLoadedEvent.target.result;
+                const addPromise = performAjax(
+                    "POST", "http://localhost:7777/Student/uploadProject",
+                    JSON.stringify({ htno, branch, guidename, typename, projectname, image: imagepath, status, inguidecomments, projectincomments, hodcomments })
+                );
+                addPromise
+                    .then(isExist => {
+                        alert("Uploaded Successfully");
+                    })
+                    .catch(err => {
+                        alert(err.message);
+                    });
+            }
+            imageReader.readAsDataURL(imageToLoad);
+        }
+
+    }
+</script>
+
+<body onload="loaddata()" style="background-color:transparent"><br>
+    <div class="container-fluid">
+        <center>
+            <h2><b>Upload</b></h2>
+        </center><br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2"><label>HallTicket No:</label>
+                <input type="text" id="htno" class="w3-input" disabled>
+            </div>
+            <div class="col-sm-2"><label>Guide Name:</label>
+                <input type="text" id="guidename" class="w3-input" disabled>
+            </div>
+            <div class="col-sm-3"><label>Type:</label>
+                <select id="typename" class="w3-input">
+                    <option>--Select--</option>
+                    <option>Abstract</option>
+                    <option>SRS</option>
+                    <option>Find Document</option>
+                    <option>UML</option>
+                    <option>Screenshots</option>
+                    <option>Others</option>
+                </select>
+            </div>
+            <div class="col-sm-2"></div>
+        </div><br>
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-2">
+                <label>Branch</label>
+                <input type="text" id="branch" class="w3-input" disabled>
+            </div>
+
+            <div class="col-sm-2"><label>Project Name</label>
+                <input type="text" id="projectname" class="w3-input">
+            </div>
+            <div class="col-sm-3"><label>Upload:</label>
+                <input type="file" id="image" accept="image/*" class="w3-input">
+            </div>
+
+            <div class="col-sm-2"></div>
+        </div><br><br>
+        <div class="row">
+            <input type="hidden" id="inguidecomments" class="w3-input">
+            <input type="hidden" id="projectincomments" class="w3-input">
+            <input type="hidden" id="hodcomments" class="w3-input">
+            <div class="col-sm-5"></div>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-primary" onclick="Upload()">Submit</button>
+            </div>
+            <div class="col-sm-5"></div>
+        </div><br>
+
+    </div>
+</body>
+
+</html>

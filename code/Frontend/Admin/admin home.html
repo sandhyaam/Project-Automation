@@ -1,0 +1,117 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+  <style>
+        body {
+            margin: 0;
+            font-family:  'Times New Roman', Times, serif;
+        }
+        .container {
+            position: relative;
+            width: 50%;
+            max-width: 300px;
+           
+        }
+
+        .image {
+            display: block;
+            width: 100%;
+            height: auto;
+            box-shadow: 2px 2px 4px 4px gray;
+        }
+
+        .to-move {
+            position: relative;
+            left: 0;
+        }
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            color: #000000 !important;
+            width: 85.5%;
+            transition: .5s ease;
+            opacity: 0;
+            color: white;
+            font-size: 15px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .container:hover .overlay {
+            opacity: 1;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#h").click(function () {
+                $("#h1,#h2,.overlay").hide();
+            });
+            $("#h1").click(function () {
+                $("#h,#h2,.overlay").hide();
+            });
+            $(document).ready(function () {
+                $("#h").click(function () {
+                    $('img.to-move').animate({ left: '300px' }, 500);
+                });
+            });
+        });
+    </script>
+</head>
+
+<body style="background: url(bbb.gif);background-repeat:no-repeat;background-size:cover; ">
+   
+   
+   
+    <div class="container-fluid">
+        <div class="row" style="border:1px solid rgb(201, 201, 201);box-shadow: 2px 2px 4px 4px gray">
+            <div class="col-sm-12">
+                <div style="text-align:center;padding: 5px;">
+                    <h2 style="color:rgb(0, 6, 85);"><b>Project Automation Tool</b></h2>
+                </div>
+            </div>
+        </div><br><br>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="container">
+                    <a href="http://localhost:4444/adminviewStudent" target="iframe">
+                        <img src="s1.png" id="h" class="image to-move rounded-circle" style="height:100px;width:100px">
+                    </a>
+                    <div class="overlay"><b>Student</b></div>
+
+                </div>
+                <a href="http://localhost:4444/adminhomepage" style="text-decoration: none;color:red;font-size: 40px;" class="fa fa-arrow-left"></a>
+
+            </div>
+            <div class="col-sm-4">
+                <div class="container">
+                    <a href="http://localhost:4444/viewEmployee" target="iframe">
+                        <img src="e2.png" id="h1" class="image  rounded-circle" style="height:100px;width:100px">
+                    </a>
+                    <div class="overlay"><b>Employee</b></div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="container">
+                    <a href="http://localhost:4444">
+                        <img src="l1.jpg" id="h2" class="image rounded-circle" style="height:100px;width:100px">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <iframe src="" id="iframe" name="iframe"
+            style="height:100%;width:100%;border:none;margin-left:5px;margin-top: 10px;"></iframe>
+    </div>
+
+
+</body>
+
+</html>

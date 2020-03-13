@@ -1,0 +1,741 @@
+<html>
+<title>project Automation Tool</title>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script>
+        $(document).ready(function () {
+            $("#cseimg").click(function () {
+                $("#cse").toggle();
+                $("#ece,#eee,#civil,#mech").hide();
+            });
+            $("#eceimg").click(function () {
+                $("#ece").toggle();
+                $("#cse,#eee,#civil,#mech").hide();
+            });
+            $("#eeeimg").click(function () {
+                $("#eee").toggle();
+                $("#ece,#cse,#civil,#mech").hide();
+            });
+            $("#civilimg").click(function () {
+                $("#civil").toggle();
+                $("#ece,#eee,#cse,#mech").hide();
+            });
+            $("#mechimg").click(function () {
+                $("#mech").toggle();
+                $("#ece,#eee,#civil,#cse").hide();
+            });
+            $("#a,#h,#p,#in,#s").click(function () {
+                $("#iframe").show();
+            });
+            $(document).ready(function () {
+                $("#b").click(function () {
+                    $('#pics').animate({ top: '380px' }, 500);
+                });
+            });
+
+
+        });
+        $(window).scroll(function () {
+            var height = $(window).scrollTop();
+            if (height > 100) {
+                $('#back2Top').fadeIn();
+            } else {
+                $('#back2Top').fadeOut();
+            }
+        });
+        $(document).ready(function () {
+            $("#back2Top").click(function (event) {
+                event.preventDefault();
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+                return false;
+            });
+
+        });
+    </script>
+    <style>
+        body {
+            margin: 0;
+        }
+        * {
+  box-sizing: border-box;
+}
+
+/* Style inputs */
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+/* Style the container/contact section */
+.container {
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* Create two columns that float next to eachother */
+.column {
+  float: left;
+  width: 50%;
+  margin-top: 6px;
+  padding: 20px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  .column, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+        #back2Top {
+            width: 40px;
+            z-index: 999;
+            display: none;
+            cursor: pointer;
+            transform: rotate(270deg);
+            position: fixed;
+            bottom: 50px;
+            right: 0;
+            background-color: rgb(255, 0, 0);
+            color: white;
+            text-align: center;
+            font-size: 30px;
+            text-decoration: none;
+        }
+
+        #back2Top:hover {
+            background-color: #DDF;
+            color: #000;
+        }
+
+        .nav-item:hover {
+            border-bottom: 3px solid red;
+        }
+
+        .image {
+            width: 80%;
+            margin: 15px;
+            cursor: pointer;
+            border-radius: 10px
+        }
+
+        .aboutimg {
+            height: 100px;
+            width: 100px
+        }
+
+        .image:hover {
+            box-shadow: 4px 4px 4px 4px black;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 250px;
+            opacity: 0;
+            transition: .5s ease;
+        }
+
+        .cont:hover .overlay {
+            opacity: 1;
+        }
+
+        #img {
+            height: 150px;
+            width: 150px;
+            margin: 5px;
+            box-shadow: 4px 4px 4px 4px gray;
+            border-radius: 50%
+        }
+
+
+        .flip-box {
+            background-color: transparent;
+            height: 180px;
+            width: 200px;
+            perspective: 1000px;
+            backface-visibility: hidden;
+        }
+
+        .flip-box-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+
+        }
+
+        .flip-box:hover .flip-box-inner {
+            transform: rotateY(180deg);
+
+        }
+
+        .flip-box-front,
+        .flip-box-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+
+        }
+
+        .flip-box-back {
+            background-color: #555;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .stickyy {
+            position: sticky;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body style="background: url(bbb.gif);background-repeat:no-repeat;background-size:cover;">
+    <a id="back2Top" title="Back to top" href="#">&#10148;</a>
+    <div class="container-fluid ">
+        <div class="row" style="border:1px solid rgb(201, 201, 201);box-shadow: 2px 2px 4px 4px gray;">
+            <div class="col-sm-2">
+                <div style="text-align:center;">
+                    <h2 style="color:rgb(0, 6, 85);"><b>Project Automation Tool</b></h2>
+                </div>
+            </div>
+            <div class="col-sm-10">
+                <nav class=" navbar-inverse" style="background-color:transparent">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar"
+                            id="b">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#"></a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar" style="font-size:15px;font-weight:bold;font-family:verdena">
+                        <ul class="nav navbar-nav" role="tablist">
+                            <li class="nav-item"><a class="nav-link" href="#" style="color:black;">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#aboutus" style="color:black;">Aboutus</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#contactus" style="color:black;;">Contact
+                                    us</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="http://localhost:4444/adminlogin" target="iframe"
+                                    style="color:black;" id="a">Admin</a></li>
+                            <li class="nav-item"><a class="nav-link" href="http://localhost:4444/hodlogin" target="iframe"
+                                    style="color:black;" id="h">HOD</a></li>
+                            <li class="nav-item"><a class="nav-link" href="http://localhost:4444/projectinchargelogin" target="iframe"
+                                    style="color:black;;" id="p">Project Incharge </a></li>
+                            <li class="nav-item"><a class="nav-link" href="http://localhost:4444/internalGuidelogin" target="iframe"
+                                    style="color:black;" id="in">Internal Guide </a></li>
+                            <li class="nav-item"><a class="nav-link" href="http://localhost:4444/studentlogin" target="iframe"
+                                    style="color:black;" id="s">Student</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div> 
+
+        </div>
+    </div><br><br>
+    <div class="container-fluid" style="display:none" id="iframe">
+        <iframe src="" id="iframe" name="iframe" style="height:80%;width:100%;border:none;margin-left:5px;"></iframe>
+    </div>
+    <div class="container-fluid w3-container w3-center w3-animate-top st" id="pics">
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2">
+                <div class="cont">
+                    <img src="c1.jpg" id="cseimg" class="image">
+                    <h3 style="margin-left:50px;"><b>CSE</b></h3>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="cont">
+                    <img src="e2.jpg" id="eceimg" class="image">
+                    <h3 style="margin-left:50px;"><b>ECE</b></h3>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="cont">
+                    <img src="ece1.jpg" id="eeeimg" class="image">
+                    <h3 style="margin-left:50px;"><b>EEE</b></h3>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="cont">
+                    <img src="civil1.jpg" id="civilimg" class="image">
+                    <h3 style="margin-left:50px;"><b>CIVIL</b></h3>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="cont">
+                    <img src="m1.jpg" id="mechimg" class="image">
+                    <h3 style="margin-left:50px;"><b>MECHANICAL</b></h3>
+                </div>
+            </div>
+            <div class="col-sm-1"></div>
+
+        </div><br>
+        <div id="cse" style="display:none" class="container-fluid w3-container w3-center w3-animate-left">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="cse1.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                    
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="ces2.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                   
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="cse3.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+        </div>
+
+        <div id="ece" style="display:none" class="container-fluid w3-container w3-center w3-animate-right">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="ece1.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="ece2.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="ece3.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+        </div>
+
+        <div id="eee" style="display:none" class="container-fluid w3-container w3-center w3-animate-left">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="eee2.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="eee3.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="eee4.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+        </div>
+        <div id="civil" style="display:none" class="container-fluid w3-container w3-center w3-animate-right">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="civil2.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="civil3.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="civil4.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+        </div>
+
+        <div id="mech" style="display:none" class="container-fluid w3-container w3-center w3-animate-left">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="m2.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="m3.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="flip-box">
+                        <div class="flip-box-inner">
+                            <div class="flip-box-front">
+                                <div class="cont">
+                                    <img src="m4.jpg" id="img">
+                                </div>
+                            </div>
+                            <div class="flip-box-back">
+                                <p>
+                                    Data Warehousing and Data Mining Dictionary.
+                                    Fuzzy Keyword Search in Cloud Computing over Encrypted Data.
+                                    Web Based Online Blood Donation System.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+        </div>
+    </div><br>
+
+    <div class="container">
+        <div id="aboutus">
+            <h1><b>About Us</b></h1>
+            <div class="w3-container w3-center w3-animate-left">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row" style="border:1px solid rgb(233, 227, 227);box-shadow: 2px 2px 4px 4px black">
+                            <br>
+                            <div class="col-sm-6">
+                                <img src="p.jpg" class="aboutimg">
+                            </div>
+                            <div class="col-sm-6" style="text-align:center;color: rgb(0, 0, 8)">
+                                <h5><b>Principal</b></h5>
+                                <h3><b>Dr.Rdharapu Kumara Swamy</b></h3>
+                                <label>M.tech,Ph.d</label><br>
+                                <hr>
+                                <a href="#"><i class="fa fa-phone"
+                                        style="font-size:25px"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#"><i class="fa fa-envelope" style="font-size:25px"></i></a>
+                            </div><br>
+                        </div>
+                    </div>
+                    <div class="col-sm-8"></div>
+                </div>
+            </div>
+            <hr>
+            <div class="w3-container w3-center w3-animate-right">
+                <div class="row">
+                    <div class="col-sm-6"></div>
+                    <div class="col-sm-6">
+                        <div class="row" style="border:1px solid rgb(233, 227, 227);box-shadow: 2px 2px 4px 4px black">
+                            <br>
+                            <div class="col-sm-6" style="text-align:center;color: rgb(0, 0, 8)">
+                                <h5><b>HOD</b></h5>
+                                <h3><b>Dr.S.Raj Kumar</b></h3>
+                                <label>M.tech,Ph.d</label><br>
+                                <hr>
+                                <a href="#"><i class="fa fa-phone"
+                                        style="font-size:25px"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#"><i class="fa fa-envelope" style="font-size:25px"></i></a>
+                            </div>
+                            <div class="col-sm-6">
+                                <img src="h1.jpg" class="aboutimg">
+                            </div><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="w3-container w3-center w3-animate-left">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row" style="border:1px solid rgb(233, 227, 227);box-shadow: 2px 2px 4px 4px black">
+                            <br>
+                            <div class="col-sm-6">
+                                <img src="h.png" class="aboutimg">
+                            </div>
+                            <div class="col-sm-6" style="text-align:center;color: rgb(0, 0, 8)">
+                                <h5><b>Project Incharge</b></h5>
+                                <h3><b>Banda Ramesh</b></h3>
+                                <label>M.tech</label><br>
+                                <hr>
+                                <a href="#"><i class="fa fa-phone"
+                                        style="font-size:25px"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#"><i class="fa fa-envelope" style="font-size:25px"></i></a>
+                            </div><br>
+                        </div>
+                    </div>
+                    <div class="col-sm-8"></div>
+                </div>
+            </div>
+            <hr>
+            <div class="w3-container w3-center w3-animate-right">
+                <div class="row">
+                    <div class="col-sm-6"></div>
+                    <div class="col-sm-6">
+                        <div class="row" style="border:1px solid rgb(233, 227, 227);box-shadow: 2px 2px 4px 4px black">
+                            <br>
+                            <div class="col-sm-6" style="text-align:center;color: rgb(0, 0, 8)">
+                                <h5><b>Internal Guide</b></h5>
+                                <h3><b>Radharapu Ajay</b></h3>
+                                <label>M.tech</label><br>
+                                <hr>
+                                <a href="#"><i class="fa fa-phone"
+                                        style="font-size:25px"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="#"><i class="fa fa-envelope" style="font-size:25px"></i></a>
+                            </div>
+                            <div class="col-sm-6">
+                                <img src="h.png" class="aboutimg">
+                            </div><br>
+                        </div>
+                    </div>
+                </div>
+            </div><br><br>
+            <div class="container" id="contactus">
+                <div style="text-align:center">
+                  <h2>Contact Us</h2>
+                  <p>Swing by for a cup of coffee, or leave us a message:</p>
+                </div>
+                <div class="row">
+                  <div class="column">
+                    <img src="map.jpg" style="width:100%">
+                  </div>
+                  <div class="column">
+                    <form action="/action_page.php">
+                      <label for="fname">First Name</label>
+                      <input type="text" id="fname" name="firstname" placeholder="Your name..">
+                      <label for="lname">Last Name</label>
+                      <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+                      <label for="country">Country</label>
+                      <select id="country" name="country">
+                        <option value="Karimnagar">Karimnagar</option>
+                        <option value="Warangal">Warangal</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                      </select>
+                      <label for="subject">Subject</label>
+                      <textarea id="subject" name="subject" placeholder="Write something.." style="height:170px"></textarea>
+                      <input type="submit" value="Submit">
+                    </form>
+                  </div>
+                </div>
+              </div>
+              
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

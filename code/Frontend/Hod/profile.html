@@ -1,0 +1,149 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<style>
+    label {
+        color: rgb(0, 6, 85);
+    }
+</style>
+<script>
+    const empid = sessionStorage.getItem("hodempid");
+    const id = sessionStorage.getItem("hodid");
+    const name = sessionStorage.getItem("hodname");
+
+    function performAjax(httpMethod, url, params) {
+        const myPromise = new Promise((resolve, reject) => {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    resolve(this.responseText);
+
+                }
+                if (this.status == 500) {
+                    reject({ error: true, message: "ServerError" });
+                }
+                if (this.status == 404) {
+                    reject({ error: true, message: "Resource not found" });
+                }
+            };
+            xhttp.open(httpMethod, url, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            params ? xhttp.send(params) : xhttp.send();
+        });
+        return myPromise;
+    }
+    function profile() {
+        document.body.style.backgroundColor = "transparent";
+
+        document.getElementById("empid").value = empid;
+        const promise = performAjax("GET", `http://localhost:7777/HOD/hodprofile?empid=${empid}`);
+        promise
+            .then((data) => {
+                const profile = JSON.parse(data);
+                profile.map(rec => {
+                    document.getElementById("role").value = rec.role;
+                    document.getElementById("empid").value = rec.empid;
+                    document.getElementById("name").value = rec.name;
+                    document.getElementById("phone").value = rec.phone;
+                    document.getElementById("emailid").value = rec.emailid;
+                    document.getElementById("branch").value = rec.branch;
+                    document.getElementById("address").value = rec.address;
+                    document.getElementById("image").src = rec.image;
+                });
+            })
+            .catch(err => {
+                alert(err.message);
+            })
+
+
+    }
+
+    function updateHod() {
+        const phone = document.getElementById("phone").value;
+        const emailid = document.getElementById("emailid").value;
+        const address = document.getElementById("address").value;
+        const promise = performAjax("PUT", `http://localhost:7777/HOD/updateHOD/${id}`,
+            JSON.stringify({ emailid, phone, address })
+        );
+        promise
+            .then((OrgPromise) => {
+                alert(' Successfully Updated');
+            })
+            .catch(err => {
+                alert(err.message);
+            })
+
+    }
+
+
+
+</script>
+
+<body onload="profile()"  style="font-family: Georgia, 'Times New Roman', Times, serif;
+"><br>
+    <div class="container-fluid"><br>
+
+        <h2 style="color:rgb(0, 6, 85)">
+            <center><strong>My Profile</strong></center>
+        </h2><br>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <img name="image" id="image" alt="photo" style="width:150px;height:200px;border-radius:50px"> </div>
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                            <label>Role:</label>
+                                <input type="text" id="role" class="w3-input">
+                               
+                    </div>
+                    <div class="col-sm-3">
+                            <label>Employee Id:</label>
+                            <input type="text" id="empid" class="w3-input">
+                    </div>
+                    <div class="col-sm-3">
+                            <label>name:</label><br>
+                            <input type="text" id="name" class="w3-input">
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-3">
+                          <label>Branch:</label>
+                                <input type="text" id="branch" class="form-control" disabled>
+                           
+                    </div>
+                    <div class="col-sm-3"><label> Mobile No:</label>
+                        <input type="text" id="phone" class="form-control">
+                    </div>
+                    <div class="col-sm-3"><label>Email Id:</label>
+                        <input type="email" id="emailid" class="form-control">
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-4"></div>
+                   
+                    <div class="col-sm-3"><label>Address:</label>
+                        <textarea name="message" id="address" class="form-control" style="height:38px;"></textarea>
+                    </div>
+                    <div class="col-sm-5"></div>
+                </div><br>
+                <div class="row">
+                    <div class="col-sm-5"></div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-primary" onclick="updateHod()" >Update</button>
+                    </div>
+                    <div class="col-sm-5"></div>
+                </div><br>
+            </div>
+        </div>
+
+    </div>
+
+</body>
